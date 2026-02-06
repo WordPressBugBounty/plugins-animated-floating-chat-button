@@ -1,0 +1,263 @@
+/* ============================
+   General Styles
+============================ */
+:root {
+  --chat-button-primary-color: #1ab744;
+  --chat-button-secondary-color: #2196f3;
+  --chat-button-text-color: #fff;
+  --chat-button-pulse-duration: 1.5s;
+  --chat-button-size: 70px;
+  --chat-button-font-family: "Lato", sans-serif;
+  --chat-button-box-shadow: 0px 0px 10px 10px #dedede;
+  --chat-button-border-radius: 5px;
+}
+
+/* ============================
+   Pulse Button Styles
+============================ */
+.pulse {
+  background: var(--chat-button-primary-color);
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  font-size: -webkit-xxx-large;
+  text-align: center;
+  z-index: 9999999;
+  border-radius: 50%;
+  height: var(--chat-button-size);
+  width: var(--chat-button-size);
+  line-height: var(--chat-button-size);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Pulse Animation */
+@-webkit-keyframes Animated-pulse {
+  0% {
+    -webkit-transform: scale(0.1);
+    transform: scale(0.1);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    -webkit-transform: scale(2);
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes Animated-pulse {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.pulse:hover,
+.pulse:focus {
+  transform: scale(1.1);
+}
+
+.pulse:nth-child(1) {
+  animation: Animated-pulse var(--chat-button-pulse-duration) infinite;
+}
+
+.pulse:nth-child(2) {
+  animation: Animated-pulse var(--chat-button-pulse-duration) infinite 0.3s;
+}
+
+.pulse:nth-child(3) {
+  animation: Animated-pulse var(--chat-button-pulse-duration) infinite 0.6s;
+}
+
+/* ============================
+   Toggle Switch Styles
+============================ */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.toggle-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .slider {
+  background-color: var(--chat-button-secondary-color);
+}
+
+.toggle-switch input:checked + .slider:before {
+  transform: translateX(14px);
+}
+
+.toggle-switch input:focus + .slider {
+  box-shadow: 0 0 4px var(--chat-button-secondary-color);
+  outline: 2px solid var(--chat-button-secondary-color);
+}
+
+/* =========================
+   Chat Button Image Styles
+============================ */
+.chat-icon img {
+    margin-bottom: 9px;
+    max-width: 100%;
+}
+
+/* ============================
+   Accessibility and Hover Styles
+============================ */
+.pulse:hover,
+.pulse:focus {
+  transform: scale(1.2);
+}
+
+/* ============================
+   About Developer Section
+============================ */
+.afcb-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: initial;
+  margin-top: 40px;
+}
+
+/* Settings Form */
+.afcb-settings-form {
+  width: 55%;
+  padding: 25px;
+  border-radius: var(--chat-button-border-radius);
+  box-shadow: var(--chat-button-box-shadow);
+  background: #ffffff;
+  margin-bottom: 20px;
+}
+
+.afcb-settings-form input#submit {
+  background: #ed4c75;
+  border: none;
+  font-size: 18px;
+  padding: 10px 20px;
+  transition: all 0.3s;
+  color: var(--chat-button-text-color);
+  border-radius: var(--chat-button-border-radius);
+  cursor: pointer;
+}
+
+.afcb-settings-form input#submit:hover {
+  background: var(--chat-button-primary-color);
+}
+
+/* Developer Info */
+#afcb-about-developer {
+  width: 39%;
+  text-align: center;
+  background: #f43676;
+  box-shadow: var(--chat-button-box-shadow);
+  border-radius: var(--chat-button-border-radius);
+  margin-bottom: 20px;
+}
+
+#afcb-about-developer h2 {
+  background: white;
+  padding: 15px;
+  margin: 0px;
+  font-size: 24px;
+  font-family: cursive;
+  margin-bottom: 15px;
+}
+
+.developer-info,
+.developer-info a {
+  text-align: center;
+  color: white;
+}
+
+.developer-photo {
+  border-radius: 50%;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.developer-info p {
+  font-size: 16px;
+  margin: 0px;
+}
+
+/* Hire Me Button */
+.hire-me-btn {
+  padding: 10px 35px;
+  background-color: var(--chat-button-primary-color);
+  color: var(--chat-button-text-color);
+  border: none;
+  border-radius: var(--chat-button-border-radius);
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s;
+  margin-top: 12px;
+}
+
+.hire-me-btn:hover {
+  background: #ed679d;
+}
+
+/* ============================
+   Responsive Adjustments
+============================ */
+@media (max-width: 768px) {
+  .afcb-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .afcb-settings-form,
+  #afcb-about-developer {
+    width: 85%;
+  }
+  .afcb-settings-form input#submit {
+    padding: 0 30px;
+  }
+  .hire-me-btn {
+      margin-bottom: 20px;
+  }
+}
