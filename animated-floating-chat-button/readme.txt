@@ -2,9 +2,9 @@
 Contributors: csehabiburr183
 Tags: click to chat, whatsapp chat button, live chat, woocommerce whatsapp, whatsapp
 Requires at least: 5.2
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.2
-Stable Tag: 1.0.1
+Stable Tag: 1.0.2
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,8 @@ Adds an animated floating chat button to the WordPress site, making communicatio
 - 🎨 **Customizable** – Change WhatsApp number, default message, and visibility.
 - 🎭 **Pulse Animation Effect** – Attracts users with a glowing effect.
 - 📢 **Easy to Use** – Configure settings from the WordPress admin panel.
+- 📍 Position Controls – Place the button on the left, right, top, or bottom.
+- 👀 Live Preview – Preview button position directly from the admin settings page.
 
 ### 🎯 **Who is this for?**
 - Online businesses, stores, and service providers 📦
@@ -39,9 +41,9 @@ Adds an animated floating chat button to the WordPress site, making communicatio
 5. Go to **WordPress Admin → Chat Button** to configure settings.
 
 == Screenshots ==
-1. Chat Setting 
-2. Save Chat Setting
-3. For Help
+1. Chat Setting & Positioning 
+2. Save Whatsapp Chat Setting
+3. For Help - Developer Info
 4. Front End Output
 
 == Frequently Asked Questions ==
@@ -82,19 +84,34 @@ This plugin does not collect, store, or process any user data. It only generates
 
 == Changelog ==
 
+= 1.0.2 =
+
+* Added WhatsApp chat button position controls (Left / Right).
+* Added WhatsApp chat button position controls (Top / Bottom).
+* Added horizontal spacing option.
+* Added vertical spacing option.
+* Added live position preview in admin settings.
+* Tested compatibility with WordPress 7.0.
+* Updated plugin compatibility information.
+* Improved frontend button positioning controls.
+* Minor code, UI and security improvements.
+
 = 1.0.1 =
-- **Minor CSS Update**: CSS Update for Maximum Compatibility
+
+* Minor CSS update for maximum compatibility.
 
 = 1.0.0 =
-- Initial release with floating WhatsApp button.
-- Added admin panel settings to change the phone number, message, and button visibility.
-- Includes animated pulse effect.
+
+* Initial release with floating WhatsApp button.
+* Added admin panel settings to change the phone number, message, and button visibility.
+* Includes animated pulse effect.
+
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-First stable release.
+= 1.0.2 =
 
+Adds button position controls, live preview, security improvements, and WordPress 7.0 compatibility.
 
 == License ==
 
