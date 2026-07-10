@@ -4,7 +4,7 @@ Tags: click to chat, whatsapp chat button, live chat, woocommerce whatsapp, what
 Requires at least: 5.2
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable Tag: 1.0.2
+Stable Tag: 1.0.3
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,8 @@ Adds an animated floating chat button to the WordPress site, making communicatio
 - 🎨 **Customizable** – Change WhatsApp number, default message, and visibility.
 - 🎭 **Pulse Animation Effect** – Attracts users with a glowing effect.
 - 📢 **Easy to Use** – Configure settings from the WordPress admin panel.
+- 🖥️ Modern Admin Interface – Clean and responsive settings page.
+- 👨‍💻 Developer Contact Card – Quick access to email and WhatsApp support.
 - 📍 Position Controls – Place the button on the left, right, top, or bottom.
 - 👀 Live Preview – Preview button position directly from the admin settings page.
 
@@ -84,6 +86,18 @@ This plugin does not collect, store, or process any user data. It only generates
 
 == Changelog ==
 
+= 1.0.3 =
+
+* Redesigned the admin settings interface with a modern, responsive layout.
+* Added an improved live preview panel.
+* Added a developer information card with quick contact buttons.
+* Improved button position controls for a better user experience.
+* Improved spacing controls with synchronized slider and number input.
+* Enhanced admin UI accessibility and responsiveness.
+* Improved code quality, sanitization, escaping, and overall security.
+* Updated the default WhatsApp number for new installations.
+* Minor performance, UI, and compatibility improvements.
+
 = 1.0.2 =
 
 * Added WhatsApp chat button position controls (Left / Right).
@@ -108,6 +122,10 @@ This plugin does not collect, store, or process any user data. It only generates
 
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+
+Introduces a redesigned admin interface, enhanced live preview, improved usability, and additional UI refinements.
 
 = 1.0.2 =
 

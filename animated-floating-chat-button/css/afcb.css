@@ -1,20 +1,21 @@
-/* ============================
-   General Styles
-============================ */
+/*
+ * Animated Floating Chat Button
+ * Version: 1.0.3
+ */
+
+/* Frontend Button
+--------------------------------------------- */
 :root {
   --chat-button-primary-color: #1ab744;
   --chat-button-secondary-color: #2196f3;
-  --chat-button-text-color: #fff;
+  --chat-button-text-color: #ffffff;
   --chat-button-pulse-duration: 1.5s;
   --chat-button-size: 70px;
   --chat-button-font-family: "Lato", sans-serif;
-  --chat-button-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  --chat-button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   --chat-button-border-radius: 5px;
 }
 
-/* ============================
-   Floating Button Wrapper
-============================ */
 .afcb-position-wrapper {
   position: fixed;
   width: var(--chat-button-size);
@@ -22,25 +23,21 @@
   z-index: 9999999;
 }
 
-/* ============================
-   Pulse Button Styles
-============================ */
 .pulse {
-  background: var(--chat-button-primary-color);
   position: absolute;
   top: 0;
   left: 0;
-  text-align: center;
   z-index: 9999999;
-  border-radius: 50%;
-  height: var(--chat-button-size);
   width: var(--chat-button-size);
+  height: var(--chat-button-size);
+  border-radius: 50%;
+  background: var(--chat-button-primary-color);
   line-height: var(--chat-button-size);
+  text-align: center;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
-/* Pulse Animation */
 @-webkit-keyframes Animated-pulse {
   0% {
     -webkit-transform: scale(0.1);
@@ -92,195 +89,735 @@
   transform: scale(1.15);
 }
 
-/* ============================
-   Chat Button Image Styles
-============================ */
-.chat-icon img {
-  margin-bottom: 9px;
-  max-width: 100%;
+.chat-button {
+  color: var(--chat-button-text-color);
+  text-decoration: none;
 }
 
-/* ============================
-   Toggle Switch Styles
-============================ */
-.toggle-switch {
-  position: relative;
+.chat-icon {
   display: inline-block;
-  width: 34px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
+  line-height: var(--chat-button-size);
+  text-align: center;
 }
 
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.chat-icon img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 9px;
+  vertical-align: middle;
 }
 
-.toggle-switch .slider {
-  position: absolute;
-  cursor: pointer;
-  inset: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 20px;
+/* Admin Page
+--------------------------------------------- */
+.afcb-admin-page {
+  --afcb-admin-navy: #071f36;
+  --afcb-admin-green: #1ab744;
+  --afcb-admin-green-dark: #159c39;
+  --afcb-admin-bg: #f5f7fa;
+  --afcb-admin-card: #ffffff;
+  --afcb-admin-text: #10243a;
+  --afcb-admin-muted: #6d7c8e;
+  --afcb-admin-border: #e3e9ef;
+  width: calc(100% - 32px);
+  max-width: 1580px;
+  margin: 14px auto 40px;
 }
 
-.toggle-switch .slider:before {
-  position: absolute;
-  content: "";
-  height: 14px;
-  width: 14px;
-  left: 3px;
-  bottom: 3px;
-  background-color: #fff;
-  transition: 0.4s;
+.afcb-admin-page * {
+  box-sizing: border-box;
+}
+
+.afcb-admin-shell {
+  overflow: hidden;
+  border: 1px solid #dce4ec;
+  border-radius: 14px;
+  background: var(--afcb-admin-card);
+  box-shadow: 0 18px 45px rgba(18, 43, 68, 0.12);
+}
+
+.afcb-admin-topbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  min-height: 56px;
+  padding: 0 24px;
+  background: var(--afcb-admin-navy);
+  color: #ffffff;
+}
+
+.afcb-window-dots {
+  display: flex;
+  gap: 7px;
+}
+
+.afcb-window-dots span {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
 }
 
-.toggle-switch input:checked + .slider {
-  background-color: var(--chat-button-secondary-color);
+.afcb-window-dots span:nth-child(1) {
+  background: #ff6b6b;
 }
 
-.toggle-switch input:checked + .slider:before {
-  transform: translateX(14px);
+.afcb-window-dots span:nth-child(2) {
+  background: #ffd166;
 }
 
-/* ============================
-   Admin Settings Layout
-============================ */
-.afcb-container {
+.afcb-window-dots span:nth-child(3) {
+  background: #1ab744;
+}
+
+.afcb-brand {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 30px;
-  margin-top: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-/* ============================
-   Settings Form
-============================ */
-.afcb-settings-form {
-  width: 58%;
-  padding: 25px;
-  border-radius: var(--chat-button-border-radius);
-  box-shadow: var(--chat-button-box-shadow);
-  background: #fff;
-  margin-bottom: 20px;
+.afcb-version {
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.afcb-settings-form input[type="text"],
-.afcb-settings-form input[type="number"],
-.afcb-settings-form select {
-  min-width: 160px;
+.afcb-admin-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(340px, 0.65fr);
+  gap: 34px;
+  padding: 34px;
+  background: var(--afcb-admin-bg);
 }
 
-.afcb-settings-form input#submit {
-  background: #ed4c75;
-  border: none;
-  font-size: 18px;
-  padding: 10px 20px;
-  transition: all 0.3s;
-  color: var(--chat-button-text-color);
-  border-radius: var(--chat-button-border-radius);
-  cursor: pointer;
+.afcb-section-heading,
+.afcb-preview-heading {
+  margin-bottom: 22px;
 }
 
-.afcb-settings-form input#submit:hover {
-  background: var(--chat-button-primary-color);
+.afcb-section-heading h1,
+.afcb-preview-heading h2,
+.afcb-developer-details h2 {
+  margin: 0 0 7px;
+  color: var(--afcb-admin-text);
+  line-height: 1.3;
 }
 
-/* ============================
-   About Developer Section
-============================ */
-#afcb-about-developer {
-  width: 38%;
-  text-align: center;
-  background: #f43676;
-  box-shadow: var(--chat-button-box-shadow);
-  border-radius: var(--chat-button-border-radius);
-  margin-bottom: 20px;
-  align-self: flex-start;
-  height: auto;
-  overflow: hidden;
+.afcb-section-heading h1 {
+  font-size: 24px;
 }
 
-#afcb-about-developer h2 {
-  background: #fff;
-  padding: 15px;
+.afcb-preview-heading h2,
+.afcb-developer-details h2 {
+  font-size: 20px;
+}
+
+.afcb-section-heading p,
+.afcb-developer-details p {
   margin: 0;
-  font-size: 28px;
-  font-family: sans-serif;
+  color: var(--afcb-admin-muted);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-.developer-info {
-  padding: 20px;
+.afcb-modern-form,
+.afcb-preview-panel,
+.afcb-developer-card {
+  padding: 24px;
+  border: 1px solid var(--afcb-admin-border);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(17, 38, 63, 0.05);
 }
 
-.developer-info,
-.developer-info a {
-  color: #fff;
+.afcb-field-group {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 24px;
+  margin: 0;
+  padding: 16px 0;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.afcb-field-group:first-of-type {
+  padding-top: 0;
+}
+
+.afcb-field-group:last-of-type {
+  border-bottom: 0;
+}
+
+.afcb-field-group > label,
+.afcb-field-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin: 0;
+  color: var(--afcb-admin-text);
+}
+
+.afcb-field-group > label > .dashicons,
+.afcb-field-label > .dashicons,
+.afcb-axis-icon {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  color: var(--afcb-admin-green-dark);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18px;
   text-align: center;
 }
 
-.developer-photo {
-  border-radius: 10%;
+.afcb-field-group strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.afcb-field-group small {
+  display: block;
+  color: var(--afcb-admin-muted);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.afcb-modern-form input[type="text"],
+.afcb-modern-form input[type="number"] {
   width: 100%;
-  max-width: 240px;
-  height: auto;
-  margin-bottom: 15px;
+  min-height: 40px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #dce4ec;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--afcb-admin-text);
+  font-size: 13px;
+  box-shadow: none;
 }
 
-.developer-info p {
-  margin: 8px 0;
-  font-size: 16px;
+.afcb-modern-form input[type="text"]:focus,
+.afcb-modern-form input[type="number"]:focus {
+  border-color: var(--afcb-admin-green);
+  box-shadow: 0 0 0 3px rgba(26, 183, 68, 0.12);
+  outline: none;
 }
 
-/* ============================
-   Hire Me Button
-============================ */
-.hire-me-btn {
-  padding: 10px 35px;
-  background-color: var(--chat-button-primary-color);
-  color: var(--chat-button-text-color);
-  border: none;
-  border-radius: var(--chat-button-border-radius);
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.3s;
-  margin-top: 12px;
+.afcb-segmented-control {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(96px, 1fr));
+  gap: 8px;
+  justify-self: start;
 }
 
-.hire-me-btn:hover {
-  background: #ed679d;
+.afcb-segmented-control label {
+  position: relative;
+  margin: 0;
 }
 
-/* ============================
-   Admin Preview - Icon
-============================ */
-#afcb-admin-floating-preview {
+.afcb-segmented-control input {
+  position: absolute;
+  opacity: 0;
   pointer-events: none;
-  z-index: 999999;
+}
+
+.afcb-segmented-control label > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 38px;
+  padding: 7px 14px;
+  border: 1px solid #dce4ec;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #526275;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.afcb-segmented-control input:checked + span {
+  border-color: var(--afcb-admin-green);
+  background: var(--afcb-admin-green);
+  color: #ffffff;
+}
+
+.afcb-segmented-control input:focus-visible + span {
+  box-shadow: 0 0 0 3px rgba(26, 183, 68, 0.15);
+}
+
+.afcb-range-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  align-items: center;
+  gap: 12px;
+}
+
+.afcb-range-control input[type="range"] {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--afcb-admin-green);
+}
+
+.afcb-number-control {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #dce4ec;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.afcb-number-control input[type="number"] {
+  min-height: 38px;
+  padding-right: 4px;
+  border: 0;
+  border-radius: 0;
+  text-align: right;
+}
+
+.afcb-number-control span {
+  padding: 0 9px 0 4px;
+  color: var(--afcb-admin-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.afcb-toggle-field {
+  grid-template-columns: minmax(220px, 1fr) auto;
+}
+
+.afcb-toggle-switch {
+  position: relative;
+  display: inline-flex;
+  width: 46px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.afcb-toggle-switch input {
+  position: absolute;
+  opacity: 0;
+}
+
+.afcb-toggle-slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #c7d0da;
+  transition: background 0.18s ease;
+}
+
+.afcb-toggle-slider::before {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(17, 38, 63, 0.22);
+  content: "";
+  transition: transform 0.18s ease;
+}
+
+.afcb-toggle-switch input:checked + .afcb-toggle-slider {
+  background: var(--afcb-admin-green);
+}
+
+.afcb-toggle-switch input:checked + .afcb-toggle-slider::before {
+  transform: translateX(21px);
+}
+
+.afcb-form-actions {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 22px;
+}
+
+.afcb-save-btn {
+    line-height: normal !important;
+    vertical-align: middle !important;
+}
+
+.afcb-admin-page .afcb-save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 196px;
+  min-height: 42px;
+  padding: 5px 20px;
+  border: 0;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #1ac15a, #159c39);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 9px 20px rgba(26, 183, 68, 0.22);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.afcb-admin-page .afcb-save-button:hover,
+.afcb-admin-page .afcb-save-button:focus {
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(26, 183, 68, 0.28);
+  filter: brightness(0.98);
+  background: #208b13;
+}
+
+.afcb-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.afcb-browser-preview {
+  overflow: hidden;
+  border: 1px solid #dbe3eb;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.afcb-browser-toolbar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-bottom: 1px solid #dce4ec;
+  background: #f3f6f9;
+}
+
+.afcb-browser-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.afcb-browser-controls span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c8d1da;
+}
+
+.afcb-browser-controls span:nth-child(1) {
+  background: #ff6b6b;
+}
+
+.afcb-browser-controls span:nth-child(2) {
+  background: #ffd166;
+}
+
+.afcb-browser-controls span:nth-child(3) {
+  background: #1ab744;
+}
+
+.afcb-browser-address {
+  height: 15px;
+  border-radius: 999px;
+  background: #e2e8ee;
+}
+
+.afcb-browser-content {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+  background: #fbfcfd;
+}
+
+.afcb-preview-site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid #edf1f4;
+  background: #ffffff;
+}
+
+.afcb-preview-logo {
+  width: 62px;
+  height: 11px;
+  border-radius: 4px;
+  background: #d8e0e8;
+}
+
+.afcb-preview-menu {
+  display: flex;
+  gap: 7px;
+}
+
+.afcb-preview-menu span {
+  width: 23px;
+  height: 6px;
+  border-radius: 999px;
+  background: #e0e6ec;
+}
+
+.afcb-preview-site-body {
+  padding: 34px 24px;
+}
+
+.afcb-preview-title {
+  width: 65%;
+  height: 17px;
+  margin-bottom: 14px;
+  border-radius: 4px;
+  background: #d9e1e9;
+}
+
+.afcb-preview-text {
+  width: 90%;
+  height: 7px;
+  margin-bottom: 7px;
+  border-radius: 999px;
+  background: #e6ebef;
+}
+
+.afcb-preview-text-short {
+  width: 64%;
+}
+
+.afcb-preview-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.afcb-preview-cards span {
+  height: 82px;
+  border-radius: 8px;
+  background: #e7edf2;
+}
+
+#afcb-admin-floating-preview {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
 }
 
 #afcb-admin-floating-preview .pulse {
-  pointer-events: none;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
 }
 
-/* ============================
-   Responsive Adjustments
-============================ */
-@media (max-width: 768px) {
-  .afcb-container {
-    flex-direction: column;
-    align-items: center;
+#afcb-admin-floating-preview .chat-icon {
+  width: 100%;
+  height: 100%;
+  line-height: 50px;
+  text-align: center;
+}
+
+#afcb-admin-floating-preview .chat-icon img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 6px;
+  vertical-align: middle;
+}
+
+#afcb-admin-floating-preview.is-hidden {
+  opacity: 0.18;
+}
+
+.afcb-preview-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 15px;
+  color: var(--afcb-admin-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.afcb-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--afcb-admin-green);
+  box-shadow: 0 0 0 3px rgba(26, 183, 68, 0.12);
+}
+
+.afcb-preview-status.is-hidden .afcb-status-dot {
+  background: #9aa6b3;
+  box-shadow: 0 0 0 3px rgba(154, 166, 179, 0.14);
+}
+
+.afcb-developer-card {
+  text-align: center;
+}
+
+.afcb-developer-photo {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 14px;
+  border: 4px solid rgba(26, 183, 68, 0.12);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.afcb-developer-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.afcb-developer-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.afcb-developer-button:hover,
+.afcb-developer-button:focus {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.afcb-email-button {
+  border: 1px solid #dce4ec;
+  background: #ffffff;
+  color: var(--afcb-admin-text);
+}
+
+.afcb-email-button:hover,
+.afcb-email-button:focus {
+  border-color: var(--afcb-admin-green);
+  color: var(--afcb-admin-green-dark);
+  box-shadow: 0 6px 16px rgba(17, 38, 63, 0.08);
+}
+
+.afcb-whatsapp-button {
+  border: 1px solid #29A71A;
+  background: #29A71A;
+  color: #ffffff;
+  box-shadow: 0 7px 16px rgba(26, 183, 68, 0.18);
+}
+
+.afcb-whatsapp-button:hover,
+.afcb-whatsapp-button:focus {
+  border-color: var(--afcb-admin-green-dark);
+  background: var(--afcb-admin-green-dark);
+  color: #ffffff;
+}
+
+.afcb-whatsapp-button img {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  object-fit: contain;
+}
+
+@media (max-width: 1100px) {
+  .afcb-admin-content {
+    grid-template-columns: 1fr;
   }
 
-  .afcb-settings-form,
-  #afcb-about-developer {
-    width: 90%;
+  .afcb-sidebar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.65fr);
+    align-items: start;
+  }
+}
+
+@media (max-width: 782px) {
+  .afcb-admin-page {
+    width: calc(100% - 20px);
+    margin-right: 10px;
   }
 
-  .hire-me-btn {
-    margin-bottom: 20px;
+  .afcb-admin-content {
+    padding: 22px 16px;
+  }
+
+  .afcb-field-group {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .afcb-toggle-field {
+    grid-template-columns: 1fr auto;
+  }
+
+  .afcb-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .afcb-version {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .afcb-brand span:last-child {
+    display: none;
+  }
+
+  .afcb-modern-form,
+  .afcb-preview-panel,
+  .afcb-developer-card {
+    padding: 16px;
+  }
+
+  .afcb-segmented-control {
+    width: 100%;
+  }
+
+  .afcb-range-control {
+    grid-template-columns: 1fr;
+  }
+
+  .afcb-number-control {
+    max-width: 100px;
+  }
+
+  .afcb-toggle-field {
+    grid-template-columns: 1fr;
+  }
+
+  .afcb-admin-page .afcb-save-button {
+    width: 100%;
+  }
+
+  .afcb-developer-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse:nth-child(1),
+  .pulse:nth-child(2),
+  .pulse:nth-child(3) {
+    animation: none;
   }
 }

@@ -3,11 +3,11 @@
  * Plugin Name: Animated Floating Chat Button
  * Plugin URI: https://wordpress.org/plugins/animated-floating-chat-button
  * Description: Adds an animated floating chat button to the WordPress site, enhancing user engagement and providing direct communication via a chat platform.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Requires at least: 5.2
  * Requires PHP: 7.2
  * Author: Freelancer Habib
- * Author URI: http://freelancer.com/u/csehabiburr183
+ * Author URI: https://www.freelancer.com/u/csehabiburr183
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: animated-floating-chat-button
@@ -19,72 +19,135 @@ if (!defined('ABSPATH')) {
 }
 
 // Define Constants
-define('AFCB_PLUGIN_VERSION', '1.0.2');
-define('AFCB_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('AFCB_PLUGIN_URL', plugin_dir_url(__FILE__));
+define( 'AFCB_PLUGIN_VERSION', '1.0.3' );
+define( 'AFCB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'AFCB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-define('AFCB_DEFAULT_PHONE', '+8801770268035');
-define('AFCB_DEFAULT_MESSAGE', 'Hi! Adnan Habib');
+define( 'AFCB_DEFAULT_PHONE', '+880123456789' );
+define( 'AFCB_DEFAULT_MESSAGE', 'Hi! Website owner, put your message here' );
 
-define('AFCB_OPTION_VISIBILITY', 'afcb_chat_button_visibility');
-define('AFCB_OPTION_PHONE', 'afcb_chat_button_phone_number');
-define('AFCB_OPTION_MESSAGE', 'afcb_chat_button_message');
-define('AFCB_OPTION_HORIZONTAL_POSITION', 'afcb_chat_button_horizontal_position');
-define('AFCB_OPTION_VERTICAL_POSITION', 'afcb_chat_button_vertical_position');
-define('AFCB_OPTION_HORIZONTAL_OFFSET', 'afcb_chat_button_horizontal_offset');
-define('AFCB_OPTION_VERTICAL_OFFSET', 'afcb_chat_button_vertical_offset');
+define( 'AFCB_OPTION_VISIBILITY', 'afcb_chat_button_visibility' );
+define( 'AFCB_OPTION_PHONE', 'afcb_chat_button_phone_number' );
+define( 'AFCB_OPTION_MESSAGE', 'afcb_chat_button_message' );
+define( 'AFCB_OPTION_HORIZONTAL_POSITION', 'afcb_chat_button_horizontal_position' );
+define( 'AFCB_OPTION_VERTICAL_POSITION', 'afcb_chat_button_vertical_position' );
+define( 'AFCB_OPTION_HORIZONTAL_OFFSET', 'afcb_chat_button_horizontal_offset' );
+define( 'AFCB_OPTION_VERTICAL_OFFSET', 'afcb_chat_button_vertical_offset' );
 
-// Sanitize Settings Values
-function afcb_sanitize_on_off($value) {
-    return ($value === 'on') ? 'on' : 'off';
+/**
+ * Sanitize the visibility setting.
+ *
+ * @param string $value Submitted value.
+ * @return string
+ */
+function afcb_sanitize_on_off( $value ) {
+    return ( 'on' === $value ) ? 'on' : 'off';
 }
 
-function afcb_sanitize_horizontal_position($value) {
-    return in_array($value, array('left', 'right'), true) ? $value : 'right';
+/**
+ * Sanitize the horizontal position setting.
+ *
+ * @param string $value Submitted value.
+ * @return string
+ */
+function afcb_sanitize_horizontal_position( $value ) {
+    return in_array( $value, array( 'left', 'right' ), true ) ? $value : 'right';
 }
 
-function afcb_sanitize_vertical_position($value) {
-    return in_array($value, array('top', 'bottom'), true) ? $value : 'bottom';
+/**
+ * Sanitize the vertical position setting.
+ *
+ * @param string $value Submitted value.
+ * @return string
+ */
+function afcb_sanitize_vertical_position( $value ) {
+    return in_array( $value, array( 'top', 'bottom' ), true ) ? $value : 'bottom';
 }
 
-function afcb_sanitize_phone_number($value) {
-    return preg_replace('/[^0-9+]/', '', sanitize_text_field($value));
+/**
+ * Sanitize a WhatsApp phone number.
+ *
+ * @param string $value Submitted phone number.
+ * @return string
+ */
+function afcb_sanitize_phone_number( $value ) {
+    return preg_replace( '/[^0-9+]/', '', sanitize_text_field( $value ) );
 }
 
-// Enqueue Frontend Scripts and Styles
+/**
+ * Enqueue frontend styles when the chat button is enabled.
+ *
+ * @return void
+ */
 function afcb_enqueue_scripts() {
-    if (get_option(AFCB_OPTION_VISIBILITY, 'off') === 'on') {
-        wp_enqueue_style('afcb-css', AFCB_PLUGIN_URL . 'css/afcb.css', array(), AFCB_PLUGIN_VERSION, 'all');
-    }
-}
-add_action('wp_enqueue_scripts', 'afcb_enqueue_scripts');
-
-// Enqueue Admin Scripts and Styles
-function afcb_admin_assets($hook) {
-    if ('toplevel_page_chat-button-settings' !== $hook) {
+    if ( 'on' !== get_option( AFCB_OPTION_VISIBILITY, 'off' ) ) {
         return;
     }
 
-    wp_enqueue_style('afcb-admin-css', AFCB_PLUGIN_URL . 'css/afcb.css', array(), AFCB_PLUGIN_VERSION, 'all');
-
-    wp_enqueue_script('afcb-admin-preview-js', AFCB_PLUGIN_URL . 'js/afcb-admin-preview.js', array(), AFCB_PLUGIN_VERSION, true);
+    wp_enqueue_style(
+        'afcb-css',
+        AFCB_PLUGIN_URL . 'css/afcb.css',
+        array(),
+        AFCB_PLUGIN_VERSION,
+        'all'
+    );
 }
-add_action('admin_enqueue_scripts', 'afcb_admin_assets');
+add_action( 'wp_enqueue_scripts', 'afcb_enqueue_scripts' );
 
-// Render Frontend HTML
+/**
+ * Enqueue assets on the plugin settings page.
+ *
+ * @param string $hook_suffix Current admin page hook suffix.
+ * @return void
+ */
+function afcb_admin_assets( $hook_suffix ) {
+    if ( 'toplevel_page_chat-button-settings' !== $hook_suffix ) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'afcb-admin-css',
+        AFCB_PLUGIN_URL . 'css/afcb.css',
+        array(),
+        AFCB_PLUGIN_VERSION,
+        'all'
+    );
+
+    wp_enqueue_script(
+        'afcb-admin-preview-js',
+        AFCB_PLUGIN_URL . 'js/afcb-admin-preview.js',
+        array(),
+        AFCB_PLUGIN_VERSION,
+        true
+    );
+
+    wp_localize_script(
+        'afcb-admin-preview-js',
+        'afcbAdminPreview',
+        array(
+            'visibleText' => esc_html__( 'Button is visible', 'animated-floating-chat-button' ),
+            'hiddenText'  => esc_html__( 'Button is hidden', 'animated-floating-chat-button' ),
+        )
+    );
+}
+add_action( 'admin_enqueue_scripts', 'afcb_admin_assets' );
+
+/**
+ * Render the floating chat button on the frontend.
+ *
+ * @return void
+ */
 function afcb_add_html() {
-    $visibility = get_option(AFCB_OPTION_VISIBILITY, 'off');
-    if ($visibility !== 'on') {
+    if ( 'on' !== get_option( AFCB_OPTION_VISIBILITY, 'off' ) ) {
         return;
     }
 
-    $phone_number = afcb_sanitize_phone_number(get_option(AFCB_OPTION_PHONE, AFCB_DEFAULT_PHONE));
-    $message      = get_option(AFCB_OPTION_MESSAGE, AFCB_DEFAULT_MESSAGE);
-
-    $horizontal_position = afcb_sanitize_horizontal_position(get_option(AFCB_OPTION_HORIZONTAL_POSITION, 'right'));
-    $vertical_position   = afcb_sanitize_vertical_position(get_option(AFCB_OPTION_VERTICAL_POSITION, 'bottom'));
-    $horizontal_offset   = absint(get_option(AFCB_OPTION_HORIZONTAL_OFFSET, 30));
-    $vertical_offset     = absint(get_option(AFCB_OPTION_VERTICAL_OFFSET, 30));
+    $phone_number        = afcb_sanitize_phone_number( get_option( AFCB_OPTION_PHONE, AFCB_DEFAULT_PHONE ) );
+    $message             = sanitize_text_field( get_option( AFCB_OPTION_MESSAGE, AFCB_DEFAULT_MESSAGE ) );
+    $horizontal_position = afcb_sanitize_horizontal_position( get_option( AFCB_OPTION_HORIZONTAL_POSITION, 'right' ) );
+    $vertical_position   = afcb_sanitize_vertical_position( get_option( AFCB_OPTION_VERTICAL_POSITION, 'bottom' ) );
+    $horizontal_offset   = absint( get_option( AFCB_OPTION_HORIZONTAL_OFFSET, 30 ) );
+    $vertical_offset     = absint( get_option( AFCB_OPTION_VERTICAL_OFFSET, 30 ) );
 
     $chat_url = add_query_arg(
         array(
@@ -95,109 +158,481 @@ function afcb_add_html() {
     );
 
     $position_style = sprintf(
-        '%s:%dpx;%s:%dpx;',
+        '%1$s:%2$dpx;%3$s:%4$dpx;',
         $horizontal_position,
         $horizontal_offset,
         $vertical_position,
         $vertical_offset
     );
     ?>
-    <section id="pulse-chat-button-wrapper" class="afcb-position-wrapper" style="<?php echo esc_attr($position_style); ?>" aria-label="<?php echo esc_attr__('Contact us via Chat', 'animated-floating-chat-button'); ?>">
-        <div class="pulse"></div>
-        <div class="pulse"></div>
-        <div class="pulse"></div>
+    <section
+        id="pulse-chat-button-wrapper"
+        class="afcb-position-wrapper"
+        style="<?php echo esc_attr( $position_style ); ?>"
+        aria-label="<?php echo esc_attr__( 'Contact us via WhatsApp', 'animated-floating-chat-button' ); ?>"
+    >
+        <span class="pulse" aria-hidden="true"></span>
+        <span class="pulse" aria-hidden="true"></span>
+        <span class="pulse" aria-hidden="true"></span>
 
-        <a style="color:#fff;" target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($chat_url); ?>" class="chat-button pulse" aria-label="<?php echo esc_attr__('Open Chat', 'animated-floating-chat-button'); ?>">
-            <span class="chat-icon">
-                <img src="<?php echo esc_url(AFCB_PLUGIN_URL . 'assets/whatsapp.png'); ?>" alt="<?php echo esc_attr__('Chat Icon', 'animated-floating-chat-button'); ?>" class="chat-icon">
+        <a
+            class="chat-button pulse"
+            href="<?php echo esc_url( $chat_url ); ?>"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="<?php echo esc_attr__( 'Open WhatsApp chat', 'animated-floating-chat-button' ); ?>"
+        >
+            <span class="chat-icon" aria-hidden="true">
+                <img
+                    src="<?php echo esc_url( AFCB_PLUGIN_URL . 'assets/whatsapp.png' ); ?>"
+                    alt=""
+                >
             </span>
         </a>
     </section>
     <?php
 }
-add_action('wp_footer', 'afcb_add_html');
+add_action( 'wp_footer', 'afcb_add_html' );
 
-// Admin Menu and Settings
+/**
+ * Register the plugin admin menu.
+ *
+ * @return void
+ */
 function afcb_admin_menu() {
-    add_menu_page('Chat Button Settings', 'Chat Button', 'manage_options', 'chat-button-settings', 'afcb_settings_page', 'dashicons-format-chat', 100);
+    add_menu_page(
+        esc_html__( 'Chat Button Settings', 'animated-floating-chat-button' ),
+        esc_html__( 'Chat Button', 'animated-floating-chat-button' ),
+        'manage_options',
+        'chat-button-settings',
+        'afcb_settings_page',
+        'dashicons-format-chat',
+        100
+    );
 }
-add_action('admin_menu', 'afcb_admin_menu');
+add_action( 'admin_menu', 'afcb_admin_menu' );
 
-// Plugin Activation
+/**
+ * Set default options and schedule the activation redirect.
+ *
+ * @return void
+ */
 function afcb_activate_plugin() {
-    add_option('afcb_do_activation_redirect', true);
-    add_option(AFCB_OPTION_VISIBILITY, 'off');
-    add_option(AFCB_OPTION_HORIZONTAL_POSITION, 'right');
-    add_option(AFCB_OPTION_VERTICAL_POSITION, 'bottom');
-    add_option(AFCB_OPTION_HORIZONTAL_OFFSET, 30);
-    add_option(AFCB_OPTION_VERTICAL_OFFSET, 30);
+    add_option( 'afcb_do_activation_redirect', true );
+    add_option( AFCB_OPTION_VISIBILITY, 'off' );
+    add_option( AFCB_OPTION_PHONE, AFCB_DEFAULT_PHONE );
+    add_option( AFCB_OPTION_MESSAGE, AFCB_DEFAULT_MESSAGE );
+    add_option( AFCB_OPTION_HORIZONTAL_POSITION, 'right' );
+    add_option( AFCB_OPTION_VERTICAL_POSITION, 'bottom' );
+    add_option( AFCB_OPTION_HORIZONTAL_OFFSET, 30 );
+    add_option( AFCB_OPTION_VERTICAL_OFFSET, 30 );
 }
-register_activation_hook(__FILE__, 'afcb_activate_plugin');
+register_activation_hook( __FILE__, 'afcb_activate_plugin' );
 
-// Redirect After Activation
+/**
+ * Redirect administrators to the settings page after activation.
+ *
+ * @return void
+ */
 function afcb_redirect() {
-    if (get_option('afcb_do_activation_redirect', false)) {
-        delete_option('afcb_do_activation_redirect');
-
-        if (!isset($_GET['activate-multi']) && current_user_can('manage_options')) {
-            wp_safe_redirect(admin_url('admin.php?page=chat-button-settings'));
-            exit;
-        }
-    }
-}
-add_action('admin_init', 'afcb_redirect');
-
-// Render Settings Page
-function afcb_settings_page() {
-    if (!current_user_can('manage_options')) {
+    if ( ! get_option( 'afcb_do_activation_redirect', false ) ) {
         return;
     }
+
+    delete_option( 'afcb_do_activation_redirect' );
+
+    if ( isset( $_GET['activate-multi'] ) || ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    wp_safe_redirect( admin_url( 'admin.php?page=chat-button-settings' ) );
+    exit;
+}
+add_action( 'admin_init', 'afcb_redirect' );
+
+/**
+ * Render the plugin settings page.
+ *
+ * @return void
+ */
+function afcb_settings_page() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    $phone_number        = get_option( AFCB_OPTION_PHONE, AFCB_DEFAULT_PHONE );
+    $message             = get_option( AFCB_OPTION_MESSAGE, AFCB_DEFAULT_MESSAGE );
+    $visibility          = get_option( AFCB_OPTION_VISIBILITY, 'off' );
+    $horizontal_position = afcb_sanitize_horizontal_position( get_option( AFCB_OPTION_HORIZONTAL_POSITION, 'right' ) );
+    $vertical_position   = afcb_sanitize_vertical_position( get_option( AFCB_OPTION_VERTICAL_POSITION, 'bottom' ) );
+    $horizontal_offset   = absint( get_option( AFCB_OPTION_HORIZONTAL_OFFSET, 30 ) );
+    $vertical_offset     = absint( get_option( AFCB_OPTION_VERTICAL_OFFSET, 30 ) );
     ?>
-    <div class="wrap">
-        <div class="afcb-container">
-            <div class="afcb-settings-form">
-                <h1>Animated Floating Chat Button:</h1>
-
-                <form method="post" action="options.php">
-                    <?php
-                    settings_fields('afcb_settings');
-                    do_settings_sections('chat-button-settings');
-                    submit_button();
-                    ?>
-                </form>
-            </div>
-
-            <div id="afcb-about-developer">
-                <h2>About Developer</h2>
-                <div class="developer-info">
-                    <img src="<?php echo esc_url(AFCB_PLUGIN_URL . 'assets/developer.png'); ?>" alt="<?php echo esc_attr__('Developer Photo', 'animated-floating-chat-button'); ?>" class="developer-photo">
-                    <p><strong>Freelancer Habib</strong></p>
-                    <p><strong>Email:</strong> <a href="mailto:hirehabibur@gmail.com">hirehabibur@gmail.com</a></p>
-                    <p>
-                        <a href="<?php echo esc_url('http://www.freelancer.com/u/csehabiburr183'); ?>" target="_blank" rel="noopener noreferrer">
-                            <button type="button" class="hire-me-btn">Hire Me</button>
-                        </a>
-                    </p>
+    <div class="wrap afcb-admin-page">
+        <div class="afcb-admin-shell">
+            <header class="afcb-admin-topbar">
+                <div class="afcb-window-dots" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
-            </div>
-        </div>
 
-        <div id="afcb-admin-floating-preview" class="afcb-position-wrapper" aria-label="<?php echo esc_attr__('Chat Button Preview', 'animated-floating-chat-button'); ?>">
-            <div class="pulse"></div>
-            <div class="pulse"></div>
-            <div class="pulse"></div>
+                <div class="afcb-brand">
+                    <span class="dashicons dashicons-format-chat" aria-hidden="true"></span>
+                    <span><?php echo esc_html__( 'Animated Floating Chat Button', 'animated-floating-chat-button' ); ?></span>
+                </div>
 
-            <div class="chat-button pulse">
-                <span class="chat-icon">
-                    <img src="<?php echo esc_url(AFCB_PLUGIN_URL . 'assets/whatsapp.png'); ?>" alt="<?php echo esc_attr__('WhatsApp Preview', 'animated-floating-chat-button'); ?>" class="chat-icon">
+                <span class="afcb-version">
+                    <?php
+                    printf(
+                        /* translators: %s: Plugin version number. */
+                        esc_html__( 'Version %s', 'animated-floating-chat-button' ),
+                        esc_html( AFCB_PLUGIN_VERSION )
+                    );
+                    ?>
                 </span>
+            </header>
+
+            <div class="afcb-admin-content">
+                <section class="afcb-settings-panel">
+                    <div class="afcb-section-heading">
+                        <h1><?php echo esc_html__( 'Chat Button Settings', 'animated-floating-chat-button' ); ?></h1>
+                        <p><?php echo esc_html__( 'Configure your WhatsApp button and preview the changes instantly.', 'animated-floating-chat-button' ); ?></p>
+                    </div>
+
+                    <form method="post" action="options.php" class="afcb-modern-form">
+                        <?php settings_fields( 'afcb_settings' ); ?>
+
+                        <div class="afcb-field-group">
+                            <label for="<?php echo esc_attr( AFCB_OPTION_PHONE ); ?>">
+                                <span class="dashicons dashicons-phone" aria-hidden="true"></span>
+                                <span>
+                                    <strong><?php echo esc_html__( 'WhatsApp Number', 'animated-floating-chat-button' ); ?></strong>
+                                    <small><?php echo esc_html__( 'Include the country code, for example +880123456789.', 'animated-floating-chat-button' ); ?></small>
+                                </span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="<?php echo esc_attr( AFCB_OPTION_PHONE ); ?>"
+                                name="<?php echo esc_attr( AFCB_OPTION_PHONE ); ?>"
+                                value="<?php echo esc_attr( $phone_number ); ?>"
+                                placeholder="<?php echo esc_attr( AFCB_DEFAULT_PHONE ); ?>"
+                                inputmode="tel"
+                                autocomplete="tel"
+                            >
+                        </div>
+
+                        <div class="afcb-field-group">
+                            <label for="<?php echo esc_attr( AFCB_OPTION_MESSAGE ); ?>">
+                                <span class="dashicons dashicons-editor-alignleft" aria-hidden="true"></span>
+                                <span>
+                                    <strong><?php echo esc_html__( 'Default Message', 'animated-floating-chat-button' ); ?></strong>
+                                    <small><?php echo esc_html__( 'This message will be pre-filled when a visitor opens WhatsApp.', 'animated-floating-chat-button' ); ?></small>
+                                </span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="<?php echo esc_attr( AFCB_OPTION_MESSAGE ); ?>"
+                                name="<?php echo esc_attr( AFCB_OPTION_MESSAGE ); ?>"
+                                value="<?php echo esc_attr( $message ); ?>"
+                                placeholder="<?php echo esc_attr__( 'Enter a default message', 'animated-floating-chat-button' ); ?>"
+                            >
+                        </div>
+
+                        <div class="afcb-field-group afcb-choice-field">
+                            <div class="afcb-field-label">
+                                <span class="dashicons dashicons-leftright" aria-hidden="true"></span>
+                                <span>
+                                    <strong><?php echo esc_html__( 'Horizontal Position', 'animated-floating-chat-button' ); ?></strong>
+                                    <small><?php echo esc_html__( 'Choose which side of the screen displays the button.', 'animated-floating-chat-button' ); ?></small>
+                                </span>
+                            </div>
+
+                            <div class="afcb-segmented-control">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="<?php echo esc_attr( AFCB_OPTION_HORIZONTAL_POSITION ); ?>"
+                                        value="left"
+                                        <?php checked( $horizontal_position, 'left' ); ?>
+                                    >
+                                    <span>
+                                        <span class="dashicons dashicons-arrow-left-alt2" aria-hidden="true"></span>
+                                        <?php echo esc_html__( 'Left', 'animated-floating-chat-button' ); ?>
+                                    </span>
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="<?php echo esc_attr( AFCB_OPTION_HORIZONTAL_POSITION ); ?>"
+                                        value="right"
+                                        <?php checked( $horizontal_position, 'right' ); ?>
+                                    >
+                                    <span>
+                                        <?php echo esc_html__( 'Right', 'animated-floating-chat-button' ); ?>
+                                        <span class="dashicons dashicons-arrow-right-alt2" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="afcb-field-group afcb-choice-field">
+                            <div class="afcb-field-label">
+                                <span class="dashicons dashicons-sort" aria-hidden="true"></span>
+                                <span>
+                                    <strong><?php echo esc_html__( 'Vertical Position', 'animated-floating-chat-button' ); ?></strong>
+                                    <small><?php echo esc_html__( 'Choose whether the button appears at the top or bottom.', 'animated-floating-chat-button' ); ?></small>
+                                </span>
+                            </div>
+
+                            <div class="afcb-segmented-control">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="<?php echo esc_attr( AFCB_OPTION_VERTICAL_POSITION ); ?>"
+                                        value="top"
+                                        <?php checked( $vertical_position, 'top' ); ?>
+                                    >
+                                    <span>
+                                        <span class="dashicons dashicons-arrow-up-alt2" aria-hidden="true"></span>
+                                        <?php echo esc_html__( 'Top', 'animated-floating-chat-button' ); ?>
+                                    </span>
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="<?php echo esc_attr( AFCB_OPTION_VERTICAL_POSITION ); ?>"
+                                        value="bottom"
+                                        <?php checked( $vertical_position, 'bottom' ); ?>
+                                    >
+                                    <span>
+                                        <?php echo esc_html__( 'Bottom', 'animated-floating-chat-button' ); ?>
+                                        <span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="afcb-field-group afcb-range-field">
+                            <label for="afcb-horizontal-range">
+                                <span class="afcb-axis-icon" aria-hidden="true">↔</span>
+                                <span>
+                                    <strong><?php echo esc_html__( 'Horizontal Space', 'animated-floating-chat-button' ); ?></strong>
+                                    <small><?php echo esc_html__( 'Distance from the selected left or right edge.', 'animated-floating-chat-button' ); ?></small>
+                                </span>
+                            </label>
+
+                            <div class="afcb-range-control">
+                                <input
+                                    type="range"
+                                    id="afcb-horizontal-range"
+                                    min="0"
+                                    max="200"
+                                    step="1"
+                                    value="<?php echo esc_attr( $horizontal_offset ); ?>"
+                                >
+
+                                <div class="afcb-number-control">
+                                    <input
+                                        type="number"
+                                        id="<?php echo esc_attr( AFCB_OPTION_HORIZONTAL_OFFSET ); ?>"
+                                        name="<?php echo esc_attr( AFCB_OPTION_HORIZONTAL_OFFSET ); ?>"
+                                        min="0"
+                                        max="200"
+                                        step="1"
+                                        value="<?php echo esc_attr( $horizontal_offset ); ?>"
+                                    >
+                                    <span><?php echo esc_html__( 'px', 'animated-floating-chat-button' ); ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="afcb-field-group afcb-range-field">
+                            <label for="afcb-vertical-range">
+                                <span class="afcb-axis-icon" aria-hidden="true">↕</span>
+                                <span>
+                                    <strong><?php echo esc_html__( 'Vertical Space', 'animated-floating-chat-button' ); ?></strong>
+                                    <small><?php echo esc_html__( 'Distance from the selected top or bottom edge.', 'animated-floating-chat-button' ); ?></small>
+                                </span>
+                            </label>
+
+                            <div class="afcb-range-control">
+                                <input
+                                    type="range"
+                                    id="afcb-vertical-range"
+                                    min="0"
+                                    max="200"
+                                    step="1"
+                                    value="<?php echo esc_attr( $vertical_offset ); ?>"
+                                >
+
+                                <div class="afcb-number-control">
+                                    <input
+                                        type="number"
+                                        id="<?php echo esc_attr( AFCB_OPTION_VERTICAL_OFFSET ); ?>"
+                                        name="<?php echo esc_attr( AFCB_OPTION_VERTICAL_OFFSET ); ?>"
+                                        min="0"
+                                        max="200"
+                                        step="1"
+                                        value="<?php echo esc_attr( $vertical_offset ); ?>"
+                                    >
+                                    <span><?php echo esc_html__( 'px', 'animated-floating-chat-button' ); ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="afcb-field-group afcb-toggle-field">
+                            <label for="<?php echo esc_attr( AFCB_OPTION_VISIBILITY ); ?>">
+                                <span class="dashicons dashicons-visibility" aria-hidden="true"></span>
+                                <span>
+                                    <strong><?php echo esc_html__( 'Visibility on Frontend', 'animated-floating-chat-button' ); ?></strong>
+                                    <small><?php echo esc_html__( 'Enable or disable the floating WhatsApp button.', 'animated-floating-chat-button' ); ?></small>
+                                </span>
+                            </label>
+
+                            <label class="afcb-toggle-switch">
+                                <input
+                                    type="checkbox"
+                                    id="<?php echo esc_attr( AFCB_OPTION_VISIBILITY ); ?>"
+                                    name="<?php echo esc_attr( AFCB_OPTION_VISIBILITY ); ?>"
+                                    value="on"
+                                    <?php checked( $visibility, 'on' ); ?>
+                                >
+                                <span class="afcb-toggle-slider" aria-hidden="true"></span>
+                                <span class="screen-reader-text"><?php echo esc_html__( 'Toggle frontend visibility', 'animated-floating-chat-button' ); ?></span>
+                            </label>
+                        </div>
+
+                        <div class="afcb-form-actions">
+                            <button type="submit" class="button button-primary afcb-save-button">
+                                <span class="dashicons dashicons-saved afcb-save-btn" aria-hidden="true"></span>
+                                <?php echo esc_html__( 'Save Changes', 'animated-floating-chat-button' ); ?>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <aside class="afcb-sidebar">
+                    <section class="afcb-preview-panel">
+                        <div class="afcb-preview-heading">
+                            <h2><?php echo esc_html__( 'Live Preview', 'animated-floating-chat-button' ); ?></h2>
+                        </div>
+
+                        <div class="afcb-browser-preview">
+                            <div class="afcb-browser-toolbar" aria-hidden="true">
+                                <div class="afcb-browser-controls">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <div class="afcb-browser-address"></div>
+                            </div>
+
+                            <div class="afcb-browser-content">
+                                <div class="afcb-preview-site-header" aria-hidden="true">
+                                    <div class="afcb-preview-logo"></div>
+                                    <div class="afcb-preview-menu">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                </div>
+
+                                <div class="afcb-preview-site-body" aria-hidden="true">
+                                    <div class="afcb-preview-title"></div>
+                                    <div class="afcb-preview-text"></div>
+                                    <div class="afcb-preview-text afcb-preview-text-short"></div>
+                                    <div class="afcb-preview-cards">
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                </div>
+
+                                <div
+                                    id="afcb-admin-floating-preview"
+                                    class="afcb-position-wrapper"
+                                    aria-label="<?php echo esc_attr__( 'Chat button preview', 'animated-floating-chat-button' ); ?>"
+                                >
+                                    <span class="pulse" aria-hidden="true"></span>
+                                    <span class="pulse" aria-hidden="true"></span>
+                                    <span class="pulse" aria-hidden="true"></span>
+
+                                    <span class="chat-button pulse">
+                                        <span class="chat-icon" aria-hidden="true">
+                                            <img
+                                                src="<?php echo esc_url( AFCB_PLUGIN_URL . 'assets/whatsapp.png' ); ?>"
+                                                alt=""
+                                            >
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="afcb-preview-status<?php echo ( 'on' === $visibility ) ? '' : ' is-hidden'; ?>">
+                            <span class="afcb-status-dot" aria-hidden="true"></span>
+                            <span id="afcb-preview-status-text">
+                                <?php
+                                echo ( 'on' === $visibility )
+                                    ? esc_html__( 'Button is visible', 'animated-floating-chat-button' )
+                                    : esc_html__( 'Button is hidden', 'animated-floating-chat-button' );
+                                ?>
+                            </span>
+                        </div>
+                    </section>
+
+                    <section class="afcb-developer-card">
+                        <img
+                            src="<?php echo esc_url( AFCB_PLUGIN_URL . 'assets/developer.png' ); ?>"
+                            alt="<?php echo esc_attr__( 'Freelancer Habib', 'animated-floating-chat-button' ); ?>"
+                            class="afcb-developer-photo"
+                        >
+
+                        <div class="afcb-developer-details">
+                            <h2><?php echo esc_html__( 'Adnan Habib', 'animated-floating-chat-button' ); ?></h2>
+                            <p><?php echo esc_html__( 'Plugin Developer', 'animated-floating-chat-button' ); ?></p>
+                        </div>
+
+                        <div class="afcb-developer-actions">
+                            <a
+                                class="afcb-developer-button afcb-email-button"
+                                href="<?php echo esc_url( 'mailto:hirehabibur@gmail.com' ); ?>"
+                            >
+                                <span class="dashicons dashicons-email-alt" aria-hidden="true"></span>
+                                <?php echo esc_html__( 'Email', 'animated-floating-chat-button' ); ?>
+                            </a>
+
+                            <a
+                                class="afcb-developer-button afcb-whatsapp-button"
+                                href="<?php echo esc_url( 'https://wa.me/8801770268035' ); ?>"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img
+                                    src="<?php echo esc_url( AFCB_PLUGIN_URL . 'assets/whatsapp.png' ); ?>"
+                                    alt=""
+                                    aria-hidden="true"
+                                >
+                                <?php echo esc_html__( 'WhatsApp Me', 'animated-floating-chat-button' ); ?>
+                            </a>
+                        </div>
+                    </section>
+                </aside>
             </div>
         </div>
     </div>
     <?php
 }
 
-// Register Settings
+/**
+ * Register plugin settings.
+ *
+ * @return void
+ */
 function afcb_register_settings() {
     register_setting(
         'afcb_settings',
@@ -268,85 +703,69 @@ function afcb_register_settings() {
             'default'           => 30,
         )
     );
-
-    add_settings_section('afcb_settings_section', 'Settings', null, 'chat-button-settings');
-
-    add_settings_field(AFCB_OPTION_PHONE, 'Chat Number', 'afcb_phone_number_callback', 'chat-button-settings', 'afcb_settings_section');
-    add_settings_field(AFCB_OPTION_MESSAGE, 'Default Message', 'afcb_message_callback', 'chat-button-settings', 'afcb_settings_section');
-    add_settings_field(AFCB_OPTION_VISIBILITY, 'Visibility on Frontend', 'afcb_visibility_callback', 'chat-button-settings', 'afcb_settings_section');
-    add_settings_field(AFCB_OPTION_HORIZONTAL_POSITION, 'Horizontal Position', 'afcb_horizontal_position_callback', 'chat-button-settings', 'afcb_settings_section');
-    add_settings_field(AFCB_OPTION_VERTICAL_POSITION, 'Vertical Position', 'afcb_vertical_position_callback', 'chat-button-settings', 'afcb_settings_section');
-    add_settings_field(AFCB_OPTION_HORIZONTAL_OFFSET, 'Left / Right Space', 'afcb_horizontal_offset_callback', 'chat-button-settings', 'afcb_settings_section');
-    add_settings_field(AFCB_OPTION_VERTICAL_OFFSET, 'Top / Bottom Space', 'afcb_vertical_offset_callback', 'chat-button-settings', 'afcb_settings_section');
 }
-add_action('admin_init', 'afcb_register_settings');
+add_action( 'admin_init', 'afcb_register_settings' );
 
-// Settings Callbacks
-function afcb_phone_number_callback() {
-    $phone_number = get_option(AFCB_OPTION_PHONE, AFCB_DEFAULT_PHONE);
-    echo "<input type='text' name='" . esc_attr(AFCB_OPTION_PHONE) . "' value='" . esc_attr($phone_number) . "' placeholder='" . esc_attr(AFCB_DEFAULT_PHONE) . "' />";
-}
-
-function afcb_message_callback() {
-    $message = get_option(AFCB_OPTION_MESSAGE, AFCB_DEFAULT_MESSAGE);
-    echo "<input type='text' name='" . esc_attr(AFCB_OPTION_MESSAGE) . "' value='" . esc_attr($message) . "' placeholder='Default message' />";
-}
-
-function afcb_visibility_callback() {
-    $visibility = get_option(AFCB_OPTION_VISIBILITY, 'off');
-    $checked = checked('on', $visibility, false);
-    echo "<label class='toggle-switch'><input type='checkbox' name='" . esc_attr(AFCB_OPTION_VISIBILITY) . "' value='on' " . esc_attr($checked) . "><span class='slider'></span></label>";
-}
-
-// Position Settings Callbacks
-function afcb_horizontal_position_callback() {
-    $value = get_option(AFCB_OPTION_HORIZONTAL_POSITION, 'right');
-
-    echo "<select name='" . esc_attr(AFCB_OPTION_HORIZONTAL_POSITION) . "'>";
-    echo "<option value='right' " . selected($value, 'right', false) . ">Right</option>";
-    echo "<option value='left' " . selected($value, 'left', false) . ">Left</option>";
-    echo "</select>";
-}
-
-function afcb_vertical_position_callback() {
-    $value = get_option(AFCB_OPTION_VERTICAL_POSITION, 'bottom');
-
-    echo "<select name='" . esc_attr(AFCB_OPTION_VERTICAL_POSITION) . "'>";
-    echo "<option value='bottom' " . selected($value, 'bottom', false) . ">Bottom</option>";
-    echo "<option value='top' " . selected($value, 'top', false) . ">Top</option>";
-    echo "</select>";
-}
-
-function afcb_horizontal_offset_callback() {
-    $value = absint(get_option(AFCB_OPTION_HORIZONTAL_OFFSET, 30));
-    echo "<input type='number' min='0' name='" . esc_attr(AFCB_OPTION_HORIZONTAL_OFFSET) . "' value='" . esc_attr($value) . "' /> px";
-}
-
-function afcb_vertical_offset_callback() {
-    $value = absint(get_option(AFCB_OPTION_VERTICAL_OFFSET, 30));
-    echo "<input type='number' min='0' name='" . esc_attr(AFCB_OPTION_VERTICAL_OFFSET) . "' value='" . esc_attr($value) . "' /> px";
-}
-
-// Save Notification
+/**
+ * Add a success notice after settings are saved.
+ *
+ * @return void
+ */
 function afcb_add_settings_message() {
-    if (isset($_GET['settings-updated']) && $_GET['settings-updated'] === 'true') {
-        add_settings_error('afcb_settings', 'afcb_message_saved', 'Settings Saved Successfully!', 'updated');
+    if (
+        ! isset( $_GET['page'], $_GET['settings-updated'] )
+        || 'chat-button-settings' !== sanitize_key( wp_unslash( $_GET['page'] ) )
+        || 'true' !== sanitize_text_field( wp_unslash( $_GET['settings-updated'] ) )
+    ) {
+        return;
     }
-}
-add_action('admin_init', 'afcb_add_settings_message');
 
-// Display Admin Notices
+    add_settings_error(
+        'afcb_settings',
+        'afcb_message_saved',
+        esc_html__( 'Settings saved successfully.', 'animated-floating-chat-button' ),
+        'updated'
+    );
+}
+add_action( 'admin_init', 'afcb_add_settings_message' );
+
+/**
+ * Display plugin settings notices on the plugin settings page.
+ *
+ * @return void
+ */
 function afcb_admin_notices() {
-    settings_errors('afcb_settings');
+    $screen = get_current_screen();
+
+    if ( ! $screen || 'toplevel_page_chat-button-settings' !== $screen->id ) {
+        return;
+    }
+
+    settings_errors( 'afcb_settings' );
 }
-add_action('admin_notices', 'afcb_admin_notices');
+add_action( 'admin_notices', 'afcb_admin_notices' );
 
-// Plugin Action Links
-function afcb_add_action_links($links) {
-    $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=chat-button-settings')) . '">Settings</a>';
-    $hire_me_link = '<a href="' . esc_url('http://www.freelancer.com/u/csehabiburr183') . '" target="_blank" rel="noopener noreferrer">Hire Me</a>';
+/**
+ * Add links to the Plugins screen.
+ *
+ * @param array $links Existing plugin action links.
+ * @return array
+ */
+function afcb_add_action_links( $links ) {
+    $settings_link = sprintf(
+        '<a href="%1$s">%2$s</a>',
+        esc_url( admin_url( 'admin.php?page=chat-button-settings' ) ),
+        esc_html__( 'Settings', 'animated-floating-chat-button' )
+    );
 
-    array_unshift($links, $settings_link, $hire_me_link);
+    $hire_me_link = sprintf(
+        '<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+        esc_url( 'https://www.freelancer.com/hireme/csehabiburr183' ),
+        esc_html__( 'Hire Me', 'animated-floating-chat-button' )
+    );
+
+    array_unshift( $links, $settings_link, $hire_me_link );
+
     return $links;
 }
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'afcb_add_action_links');
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'afcb_add_action_links' );
