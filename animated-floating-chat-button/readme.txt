@@ -2,7 +2,7 @@
 Contributors: csehabiburr183
 Tags: click to chat, whatsapp chat button, live chat, woocommerce whatsapp, whatsapp
 Requires at least: 5.2
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.2
 Stable Tag: 1.0.3
 License: GPL v2 or later
